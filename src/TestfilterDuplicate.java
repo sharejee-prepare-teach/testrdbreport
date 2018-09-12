@@ -9,6 +9,7 @@ public class TestfilterDuplicate {
     public static void main(String args[]){
         System.out.println("Employees Size: " +getEmployees().size());
         List<Employee> employees = getDuplicateEmployees(getEmployees());
+        // check above method getDuplicateEmployeeName
         List<ReportEmployee> reportEmployees = getDuplicateEmployeeName(employees);
         for(ReportEmployee reportEmployee: reportEmployees){
             System.out.println("ReEmployeeName: " +reportEmployee.geteName());
