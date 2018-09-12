@@ -7,11 +7,11 @@ import java.util.*;
 /**
  * Created by Ron Rith on 9/11/2018.
  */
-public class TestfillerDuplicate {
+public class TestfilterDuplicate {
     static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     public static void main(String args[]){
-        getDuplicateEmployees2(getEmployees());
-
+        //getDuplicateEmployees2(getEmployees());
+        getDuplicateEmployeeName(getEmployees());
         /*List<String> strings = Arrays.asList( "stack","overflow", "stack", "yahoo", "google", "msn", "MSN", "stack", "overflow", "user" );
         Map<String,Integer> duplicate = getDuplicateItems(strings);*/
         //compareDateTest();
@@ -46,7 +46,7 @@ public class TestfillerDuplicate {
                 employeeList.add(em);
                 counts.put(em.geteName(),employeeList);
             } else {
-                counts.put(em.geteName(),employeeList.add(em));
+                counts.put(em.geteName(),employeeList);
             }
         }
 
@@ -73,19 +73,19 @@ public class TestfillerDuplicate {
                     }
                     reportEmployee.seteName(eName);
                     reportEmployee.setDay1(day1WorkDay);
-                    reportEmployee.setDay2(day2WorkDay);
+                    //reportEmployee.setDay2(day2WorkDay);
                     reportEmployee.setTotalAmount(totalMoney);
                     reportEmployeeList.add(reportEmployee);
                 }
             }
         }
-        System.out.println("******************");
+      /*  System.out.println("******************");
         for(ReportEmployee r: reportEmployeeList){
             System.out.println(r.geteName());
             System.out.println(r.getDay1());
             System.out.println(r.getDay2());
             System.out.println(r.getTotalAmount());
-        }
+        }*/
         System.out.println("ReportE Size: "+reportEmployeeList.size());
         return reportEmployeeList;
     }
@@ -175,30 +175,29 @@ public class TestfillerDuplicate {
             System.out.println("DateFrom: " + e.getDateFrom());
         }
 
-        System.out.println("---- start day 1 ------");
-        List<Employee> emps = getEmployee2ByDate(getEmployees(),dates.get(0));
+        List<Employee> emps = getEmployee2ByDate(getEmployees(),dates);
         List<ReportEmployee> reportEmployeeList = new ArrayList<>();
 
         if (emps != null) {
-            System.out.println("Size emps: " + emps);
-            reportEmployeeList = getDuplicateEmployeeName(emps);
-            //reportEmployeeList3 = reportEmployeeList;
+            System.out.println("Size emps: " + emps.size());
         }
-        System.out.println("---- end day 1 ------");
     }
 
-    private static List<Employee> getEmployee2ByDate(List<Employee> employees,Date date) {
+    private static List<Employee> getEmployee2ByDate(List<Employee> employees,List<Date> dates) {
         List<Employee> emp = new ArrayList<>();
-        if (employees != null) {
+        if (employees != null && dates!=null) {
             for (Employee employee : employees) {
-                if (date.compareTo(employee.getDateFrom())==0) {
-                    System.out.println("------search-----");
-                    System.out.println("Employee name: " + employee.geteName());
-                    System.out.println("Employee food:" + employee.getFood());
-                    System.out.println("Employee date from: " + employee.getDateFrom());
-                    System.out.println("------end search-----");
-                    emp.add(employee);
+                for(int i =0;i<dates.size();i++){
+                    if (dates.get(i).compareTo(employee.getDateFrom())==0) {
+                        System.out.println("------search-----");
+                        System.out.println("Employee name: " + employee.geteName());
+                        System.out.println("Employee food:" + employee.getFood());
+                        System.out.println("Employee date from: " + employee.getDateFrom());
+                        System.out.println("------end search-----");
+                        emp.add(employee);
+                    }
                 }
+
             }
             return emp;
         }
