@@ -1,6 +1,3 @@
-import sun.util.calendar.BaseCalendar;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -10,13 +7,17 @@ import java.util.*;
 public class TestfilterDuplicate {
     static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     public static void main(String args[]){
-        //getDuplicateEmployees2(getEmployees());
-        getDuplicateEmployeeName(getEmployees());
-        /*List<String> strings = Arrays.asList( "stack","overflow", "stack", "yahoo", "google", "msn", "MSN", "stack", "overflow", "user" );
-        Map<String,Integer> duplicate = getDuplicateItems(strings);*/
-        //compareDateTest();
-
-
+        System.out.println("Employees Size: " +getEmployees().size());
+        List<Employee> employees = getDuplicateEmployees(getEmployees());
+        List<ReportEmployee> reportEmployees = getDuplicateEmployeeName(employees);
+        for(ReportEmployee reportEmployee: reportEmployees){
+            System.out.println("ReEmployeeName: " +reportEmployee.geteName());
+        }
+       /*
+        List<ReportEmployee> reportEmployees = getDuplicateEmployeeName(getEmployees());
+        for(ReportEmployee reportEmployee: reportEmployees){
+            System.out.println(reportEmployee.geteName()+"; "+reportEmployee.getDay1()+" ; "+reportEmployee.getTotalAmount());
+        }*/
     }
     public static Map<String, Integer> getDuplicateItems(List<String> strings){
         Map<String, Integer> counts = new HashMap<>();
@@ -52,12 +53,10 @@ public class TestfilterDuplicate {
 
         for (Map.Entry ent : counts.entrySet()) {
             for (Object obj : Arrays.asList(ent.getValue())) {
-                System.out.println(obj.toString());
                 List<Employee> employeeList1 = (List<Employee>) obj;
                 if (employeeList1 != null) {
                     String eName = "";
                     String day1WorkDay = "";
-                    String day2WorkDay = "";
                     Double totalMoney = 0D;
 
                     ReportEmployee reportEmployee = new ReportEmployee();
@@ -66,26 +65,15 @@ public class TestfilterDuplicate {
                         if(i == 0){
                             day1WorkDay = employeeList1.get(i).getWorkDay();
                             totalMoney += employeeList1.get(i).getFood();
-                        }else {
-                            day2WorkDay = employeeList1.get(i).getWorkDay();
-                            totalMoney += totalMoney;
                         }
                     }
                     reportEmployee.seteName(eName);
                     reportEmployee.setDay1(day1WorkDay);
-                    //reportEmployee.setDay2(day2WorkDay);
                     reportEmployee.setTotalAmount(totalMoney);
                     reportEmployeeList.add(reportEmployee);
                 }
             }
         }
-      /*  System.out.println("******************");
-        for(ReportEmployee r: reportEmployeeList){
-            System.out.println(r.geteName());
-            System.out.println(r.getDay1());
-            System.out.println(r.getDay2());
-            System.out.println(r.getTotalAmount());
-        }*/
         System.out.println("ReportE Size: "+reportEmployeeList.size());
         return reportEmployeeList;
     }
@@ -162,7 +150,8 @@ public class TestfilterDuplicate {
     }
 
     // Has not
-    public static void getDuplicateEmployees2(List<Employee> employees){
+    //getDuplicateEmployees from start date to end date
+    public static List<Employee> getDuplicateEmployees(List<Employee> employees){
         List<Date> dates = new ArrayList<>();
 
         String str_date ="01/12/2018";
@@ -176,19 +165,20 @@ public class TestfilterDuplicate {
         }
 
         List<Employee> emps = getEmployee2ByDate(getEmployees(),dates);
-        List<ReportEmployee> reportEmployeeList = new ArrayList<>();
 
         if (emps != null) {
             System.out.println("Size emps: " + emps.size());
         }
+        return emps;
     }
 
+    // get Employee by start date and end date para
     private static List<Employee> getEmployee2ByDate(List<Employee> employees,List<Date> dates) {
         List<Employee> emp = new ArrayList<>();
-        if (employees != null && dates!=null) {
+        if (employees != null && dates != null) {
             for (Employee employee : employees) {
-                for(int i =0;i<dates.size();i++){
-                    if (dates.get(i).compareTo(employee.getDateFrom())==0) {
+                for (int i = 0; i < dates.size(); i++) {
+                    if (dates.get(i).compareTo(employee.getDateFrom()) == 0) {
                         System.out.println("------search-----");
                         System.out.println("Employee name: " + employee.geteName());
                         System.out.println("Employee food:" + employee.getFood());
@@ -197,7 +187,6 @@ public class TestfilterDuplicate {
                         emp.add(employee);
                     }
                 }
-
             }
             return emp;
         }
