@@ -7,18 +7,28 @@ import java.util.*;
 public class TestfilterDuplicate {
     static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     public static void main(String args[]){
-        System.out.println("Employees Size: " +getEmployees().size());
-        List<Employee> employees = getDuplicateEmployees(getEmployees());
-        // check above method getDuplicateEmployeeName
-        List<ReportEmployee> reportEmployees = getDuplicateEmployeeName(employees);
-        for(ReportEmployee reportEmployee: reportEmployees){
-            System.out.println("ReEmployeeName: " +reportEmployee.geteName());
+       List<Employee> employees = getEmployees();
+        displayEmployee(employees);
+        Date date = null;
+        Date date2 = null;
+        List<Date> dates = new ArrayList<>();
+        try {
+            date = sdf.parse("01/12/2018");
+            date2 = sdf.parse("02/12/2018");
+            dates.add(date);
+            dates.add(date2);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-       /*
-        List<ReportEmployee> reportEmployees = getDuplicateEmployeeName(getEmployees());
-        for(ReportEmployee reportEmployee: reportEmployees){
-            System.out.println(reportEmployee.geteName()+"; "+reportEmployee.getDay1()+" ; "+reportEmployee.getTotalAmount());
-        }*/
+        Map<String,Object> getEmployeeByDates = getEmployeeByDates(employees,dates);
+        displayReportEmployeeListDays(getEmployeeByDates);
+        /*System.out.println("------search found day1-----");
+        List<Employee> employeeListDay1 = getEmployeeByDate(employees,date);
+        System.out.println("------search found day2-----");
+        List<Employee> employeeListDay2 = getEmployeeByDate(employees,date2);
+
+        List<ReportEmployee> reportEmployees = getReportEmployee(employeeListDay1,employeeListDay2);
+        displayReportEmployee(reportEmployees);*/
     }
     public static Map<String, Integer> getDuplicateItems(List<String> strings){
         Map<String, Integer> counts = new HashMap<>();
@@ -86,7 +96,7 @@ public class TestfilterDuplicate {
         for(int i =0;i<10;i++){
             Date date = null;
             try {
-                date = sdf.parse((1+i)+"/12/2018");
+                date = sdf.parse("01/12/2018");
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -165,7 +175,7 @@ public class TestfilterDuplicate {
             System.out.println("DateFrom: " + e.getDateFrom());
         }
 
-        List<Employee> emps = getEmployee2ByDate(getEmployees(),dates);
+        List<Employee> emps = getEmployeeByDate(getEmployees(),dates);
 
         if (emps != null) {
             System.out.println("Size emps: " + emps.size());
@@ -174,7 +184,7 @@ public class TestfilterDuplicate {
     }
 
     // get Employee by start date and end date para
-    private static List<Employee> getEmployee2ByDate(List<Employee> employees,List<Date> dates) {
+    private static List<Employee> getEmployeeByDate(List<Employee> employees, List<Date> dates) {
         List<Employee> emp = new ArrayList<>();
         if (employees != null && dates != null) {
             for (Employee employee : employees) {
@@ -193,7 +203,165 @@ public class TestfilterDuplicate {
         }
         return null;
     }
+    // get employee by date
+    private static List<Employee> getEmployeeByDate(List<Employee> employees, Date date) {
+        List<Employee> emp = new ArrayList<>();
+        if (employees != null && date != null) {
+            for (Employee employee : employees) {
+                    if (date.compareTo(employee.getDateFrom()) == 0) {
+                        emp.add(employee);
+                    }
+            }
+            return emp;
+        }
+        return null;
+    }
 
+    // get employee by date
+    private static Map<String, Object> getEmployeeByDates(List<Employee> employees, List<Date> dates) {
+        Map<String,Object> mapEmloyees = new HashMap<>();
+
+        if (employees != null && dates != null) {
+            List<Employee> emp = new ArrayList<>();
+            List<Employee> emp2 = new ArrayList<>();
+            for (Employee employee : employees) {
+                for (int i = 0; i < dates.size(); i++) {
+                    if(i == 0){
+                        if (dates.get(i).compareTo(employee.getDateFrom()) == 0) {
+                            emp.add(employee);
+                            mapEmloyees.put("day1", emp);
+                        }
+                    }else if(i == 1){
+                        if (dates.get(i).compareTo(employee.getDateFrom()) == 0) {
+                            emp2.add(employee);
+                            mapEmloyees.put("day2", emp2);
+                        }
+                    }
+
+                }
+            }
+            return mapEmloyees;
+        }
+        return null;
+    }
+
+    private static void displayEmployee(List<Employee> employees){
+        System.out.println("DISPLAY EMPLOYEE");
+        for(Employee employee: employees){
+            System.out.println(employee.geteName()+ "; "+ employee.getDateFrom() + "; "+employee.getFood());
+        }
+    }
+
+    private static void displayReportEmployee(List<ReportEmployee> reportEmployees){
+        System.out.println("DISPLAY REPORT EMPLOYEE");
+        System.out.println("NAME;\t DAY1;\t DAY2;\t TOTALMONEY");
+        for(ReportEmployee reportEmployee: reportEmployees){
+            System.out.println(reportEmployee.geteName()+ "; "+ reportEmployee.getDay1() + "; "+reportEmployee.getDay2()+ "; "+reportEmployee.getTotalAmount());
+        }
+    }
+
+    private static void displayReportEmployeeListDays(Map<String,Object> reportEmployees){
+        List<ReportEmployee> reportEmployeeList = new ArrayList<>();
+        List<ReportEmployee> reportEmployeeListDay2 = new ArrayList<>();
+
+        System.out.println("DISPLAY REPORT EMPLOYEE");
+        //System.out.println("NAME;\t DAY1;\t DAY2;\t TOTALMONEY");
+        String eName = "";
+
+        Double totalAmount = 0D;
+        String day1WorkDay = "";
+        String day2WorkDay = "";
+
+        for (Map.Entry ent : reportEmployees.entrySet()) {
+
+            if (ent.getKey().equals("day1")) {
+                for (Object obj : Arrays.asList(ent.getValue())) {
+                    List<Employee> employeeList1 = (List<Employee>) obj;
+                    for(Employee employee: employeeList1){
+                       ReportEmployee reportEmployee = new ReportEmployee();
+                        //System.out.println(employee.geteName()+ "; "+ employee.getWorkDay() + "; "+employee.getFood());
+                       reportEmployee.seteName(employee.geteName());
+                       reportEmployee.setDay1(employee.getWorkDay());
+                       reportEmployee.setTotalAmount(employee.getFood());
+                       reportEmployeeList.add(reportEmployee);
+                    }
+                }
+            }
+
+            if (ent.getKey().equals("day2")) {
+                for (Object obj : Arrays.asList(ent.getValue())) {
+                    List<Employee> employeeList1 = (List<Employee>) obj;
+                    for(Employee employee: employeeList1){
+                        ReportEmployee reportEmployee = new ReportEmployee();
+                        reportEmployee.seteName(employee.geteName());
+                        reportEmployee.setDay2(employee.getWorkDay());
+                        reportEmployee.setTotalAmount(employee.getFood());
+                        reportEmployeeListDay2.add(reportEmployee);
+                    }
+                }
+            }
+        }
+        System.out.println("NAME;\t DAY1;\t DAY2;\t TOTALMONEY");
+        // loop day1
+        for(ReportEmployee reportEmployee: reportEmployeeList){
+            // loop day2
+            for(ReportEmployee re2: reportEmployeeListDay2){
+                if(re2.geteName().equals(reportEmployee.geteName())){
+                    reportEmployee.setDay2(re2.getDay2());
+                    System.out.println(reportEmployee.geteName() + "; "+reportEmployee.getDay1()+ "; "+ reportEmployee.getDay2() + "; "+(reportEmployee.getTotalAmount()+re2.getTotalAmount()));
+                }else{
+                    System.out.println(reportEmployee.geteName() + "; "+reportEmployee.getDay1()+ "; "+ reportEmployee.getDay2() + "; "+reportEmployee.getTotalAmount());
+                }
+            }
+        }
+
+      /*  System.out.println("------reportEmployeeListDay2---------");
+        for(ReportEmployee reportEmployee: reportEmployeeListDay2){
+            System.out.println(reportEmployee.geteName() + "; "+reportEmployee.getDay1()+ "; "+ reportEmployee.getDay2() + "; "+reportEmployee.getTotalAmount());
+        }*/
+
+    }
+
+    private static Employee getFilterName(List<Employee> employees, String filter) {
+        Employee employee = new Employee();
+        for (Employee e : employees) {
+            if (!filter.equals(e.geteName())) {
+                employee.seteName(e.geteName());
+                employee.seteNo(e.geteNo());
+                employee.setWorkDay(e.getWorkDay());
+                employee.setDateFrom(e.getDateFrom());
+            }
+        }
+        return employee;
+    }
+
+    // get reportEmployee in (day1,day2)
+    private static List<ReportEmployee> getReportEmployee(List<Employee> employees,List<Employee> employeeList){
+        List<ReportEmployee> reportEmployeeList = new ArrayList<>();
+        if (employees != null) {
+            // employee from day1
+            for(Employee employee: employees){
+                ReportEmployee reportEmployee = new ReportEmployee();
+                reportEmployee.seteName(employee.geteName());
+                reportEmployee.setDay1(employee.getWorkDay());
+                // employee from day2
+                for(Employee e: employeeList){
+                    if(e.geteName().equals(employee.geteName())){
+                        reportEmployee.setDay2(e.getWorkDay());
+                        reportEmployee.setTotalAmount(employee.getFood()+e.getFood());
+                    }else {
+                        reportEmployee.setDay2(employee.getWorkDay());
+                        reportEmployee.setTotalAmount(employee.getFood());
+                    }
+                }
+                // employee from day3
+
+                reportEmployeeList.add(reportEmployee);
+            }
+            return reportEmployeeList;
+        }
+        return null;
+    }
 
 }
 
@@ -260,19 +428,15 @@ class ReportEmployee{
     private String day1;
     private String day2;
     private Double totalAmount;
-    private String day1WorkDay;
-    private String day2WorkDay;
 
-    public ReportEmployee() {
-    }
-
-    public ReportEmployee(String eName, String day1, String day2, Double totalAmount, String day1WorkDay, String day2WorkDay) {
+    public ReportEmployee(String eName, String day1, String day2, Double totalAmount) {
         this.eName = eName;
         this.day1 = day1;
         this.day2 = day2;
         this.totalAmount = totalAmount;
-        this.day1WorkDay = day1WorkDay;
-        this.day2WorkDay = day2WorkDay;
+    }
+
+    public ReportEmployee() {
     }
 
     public String geteName() {
@@ -305,21 +469,5 @@ class ReportEmployee{
 
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
-    }
-
-    public String getDay1WorkDay() {
-        return day1WorkDay;
-    }
-
-    public void setDay1WorkDay(String day1WorkDay) {
-        this.day1WorkDay = day1WorkDay;
-    }
-
-    public String getDay2WorkDay() {
-        return day2WorkDay;
-    }
-
-    public void setDay2WorkDay(String day2WorkDay) {
-        this.day2WorkDay = day2WorkDay;
     }
 }
