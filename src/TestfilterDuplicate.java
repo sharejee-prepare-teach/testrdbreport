@@ -217,13 +217,14 @@ public class TestfilterDuplicate {
         return null;
     }
 
-    // get employee by date
+    // get employee by dates
     private static Map<String, Object> getEmployeeByDates(List<Employee> employees, List<Date> dates) {
         Map<String,Object> mapEmloyees = new HashMap<>();
+        List<Employee> emp = new ArrayList<>();
+        List<Employee> emp2 = new ArrayList<>();
 
         if (employees != null && dates != null) {
-            List<Employee> emp = new ArrayList<>();
-            List<Employee> emp2 = new ArrayList<>();
+
             for (Employee employee : employees) {
                 for (int i = 0; i < dates.size(); i++) {
                     if(i == 0){
