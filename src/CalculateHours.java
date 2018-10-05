@@ -9,15 +9,15 @@ public class CalculateHours {
     static String TAFTERNOON = "T-Afternoon";
 
     public static void main(String args[]){
-        String login = "7:44";
-        String logout = "11:30";
-        Double logingConvert = getHoursFormat("7:44");
+        String login = "09:18";
+        String logout = "11:55";
+        /*Double logingConvert = getHoursFormat("7:44");
         if (logingConvert > 2) {
             System.out.println("logingConvert>2");
         }
-        System.out.println("Login Convert: " + logingConvert);
+        System.out.println("Login Convert: " + logingConvert);*/
 
-        //String hourWorking = getHoursWorking(TAFTERNOON,login,logout);
+        String hourWorking = getHoursWorking(TAFTERNOON,login,logout);
     }
 
     //getHours from 7:77 to 7.77
@@ -110,8 +110,8 @@ public class CalculateHours {
     }
 
     public static String getHoursWorking(String timeTable,String login,String logout){
-        Double loginC = getHoursFormat(getHoursAfternoon(TMORNING,login));
-        Double logoutC = getHoursFormat(getHoursAfternoon(TMORNING,logout));
+        Double loginC = getHoursFormat(getHoursAfternoon(timeTable,login));
+        Double logoutC = getHoursFormat(getHoursAfternoon(timeTable,logout));
         Double result = logoutC - loginC;
         System.out.println("Result: "+result);
         // Equal and bigger than 60 mn must sub

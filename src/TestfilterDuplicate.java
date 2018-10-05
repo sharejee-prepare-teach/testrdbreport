@@ -90,7 +90,7 @@ public class TestfilterDuplicate {
     }
 
     // Has
-    private static List<Employee> getEmployees(){
+    public static List<Employee> getEmployees(){
         List<Employee> employees = new ArrayList<>();
 
         for(int i =0;i<10;i++){
@@ -366,109 +366,3 @@ public class TestfilterDuplicate {
 
 }
 
-class Employee{
-    private Integer eNo;
-    private String eName;
-    private Date dateFrom;
-    private String workDay;
-    private Double food;
-
-    public Integer geteNo() {
-        return eNo;
-    }
-
-    public void seteNo(Integer eNo) {
-        this.eNo = eNo;
-    }
-
-    public String geteName() {
-        return eName;
-    }
-
-    public void seteName(String eName) {
-        this.eName = eName;
-    }
-
-    public Date getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(Date dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public Double getFood() {
-        return food;
-    }
-
-    public void setFood(Double food) {
-        this.food = food;
-    }
-
-    public String getWorkDay() {
-        return workDay;
-    }
-
-    public void setWorkDay(String workDay) {
-        this.workDay = workDay;
-    }
-
-    public Employee(Integer eNo, String eName, Date dateFrom, String workDay, Double food) {
-        this.eNo = eNo;
-        this.eName = eName;
-        this.dateFrom = dateFrom;
-        this.workDay = workDay;
-        this.food = food;
-    }
-
-    public Employee() {
-    }
-}
-class ReportEmployee{
-    private String eName;
-    private String day1;
-    private String day2;
-    private Double totalAmount;
-
-    public ReportEmployee(String eName, String day1, String day2, Double totalAmount) {
-        this.eName = eName;
-        this.day1 = day1;
-        this.day2 = day2;
-        this.totalAmount = totalAmount;
-    }
-
-    public ReportEmployee() {
-    }
-
-    public String geteName() {
-        return eName;
-    }
-
-    public void seteName(String eName) {
-        this.eName = eName;
-    }
-
-    public String getDay1() {
-        return day1;
-    }
-
-    public void setDay1(String day1) {
-        this.day1 = day1;
-    }
-
-    public String getDay2() {
-        return day2;
-    }
-
-    public void setDay2(String day2) {
-        this.day2 = day2;
-    }
-
-    public Double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-}
