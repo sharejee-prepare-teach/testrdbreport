@@ -13,6 +13,7 @@ public class BaseFormatDate {
     public static String PATTERN_DATE = "dd-MMM-yyyy";
     public static String PATTERN_DATE2 = "dd/MM/yyyy";
     public static String PATTERN_DATE3 = "yyyy-MM-dd";
+    public static String PATTERN_DATE4 = "E MMM dd yyyy HH:mm:ss";
     
     public static String getDateFormatToSQL(Date date) {
         if (date != null) {
@@ -54,6 +55,21 @@ public class BaseFormatDate {
         return null;
     }
 
+    public static Date getDateValuePlus(String dateString) {
+        //Get format Thu Mar 14 2019 14:00:40 GMT+0700
+        if (dateString != null) {
+            DateFormat formatter = new SimpleDateFormat(PATTERN_DATE4);
+            Date date = null;
+            try {
+                date = (Date) formatter.parse(dateString);
+                return date;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public static String getDateFromFormat(String dateString) {
         if (dateString != null) {
             Date date = null;
@@ -82,12 +98,22 @@ public class BaseFormatDate {
         }
         return null;
     }
+
+    public static String getDateFromFormatPlus(String dateString) {
+        if (dateString != null) {
+            Date date = null;
+            date = getDateValuePlus(dateString);
+            String dfs = getDateFormatToSQL3(date);
+            return dfs;
+        }
+        return null;
+    }
     public static void main(String args[]){
-        /*String dd = getDateFromFormat3("Mon Jun 18 00:00:00 IST 2012");
-        System.out.println("date date: "+dd);*/
-        Date date = null;
+        String dd = getDateFromFormatPlus("Thu Mar 14 2019 14:00:40 GMT+0700");
+        System.out.println("date date: "+dd);
+   /*     Date date = null;
         date = getDateFormatRD3("18-10-2018");
-        System.out.println(date);
+        System.out.println(date);*/
     }
     // get date format return type date
     public static Date getDateFormatRD(String stringDate){
